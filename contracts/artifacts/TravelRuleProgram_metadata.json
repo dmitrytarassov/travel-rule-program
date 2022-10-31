@@ -9,6 +9,19 @@
 				"anonymous": false,
 				"inputs": [
 					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					}
+				],
+				"name": "AddTransaction",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
 						"indexed": true,
 						"internalType": "address",
 						"name": "previousOwner",
@@ -79,6 +92,63 @@
 				"type": "function"
 			},
 			{
+				"inputs": [],
+				"name": "clear",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getAllTransactions",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "id",
+								"type": "uint256"
+							},
+							{
+								"internalType": "address",
+								"name": "from",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "to",
+								"type": "address"
+							},
+							{
+								"internalType": "string",
+								"name": "sendersData",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "receiversData",
+								"type": "string"
+							},
+							{
+								"internalType": "uint8",
+								"name": "amlForSender",
+								"type": "uint8"
+							},
+							{
+								"internalType": "uint8",
+								"name": "amlForReceiver",
+								"type": "uint8"
+							}
+						],
+						"internalType": "struct TravelRuleProgram.Transaction[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "uint256",
@@ -90,6 +160,11 @@
 				"outputs": [
 					{
 						"components": [
+							{
+								"internalType": "uint256",
+								"name": "id",
+								"type": "uint256"
+							},
 							{
 								"internalType": "address",
 								"name": "from",
@@ -146,6 +221,11 @@
 				"outputs": [
 					{
 						"components": [
+							{
+								"internalType": "uint256",
+								"name": "id",
+								"type": "uint256"
+							},
 							{
 								"internalType": "address",
 								"name": "from",
@@ -396,11 +476,11 @@
 			]
 		},
 		"contracts/TravelRuleProgram.sol": {
-			"keccak256": "0xe2ac93b3befbb2131d92e829497ff916bcec9efaae0ef306a9df3e2d79db0eb6",
+			"keccak256": "0xd80d95776aa861dda792f06fe45ffe6aff95c667f7725d82b928ffcb7963dccf",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://b3e81d66383b8e527e5afa05ea55e3899c3e5d42ae31212843e7affc68cf6489",
-				"dweb:/ipfs/QmVUPeip3XDdE8Y59kGbmmVj581sjBRdkpV5gWdAmCfBfw"
+				"bzz-raw://a22785cc8a10c555c52307047ae75673e740351e893d55043b22bf35c3e47087",
+				"dweb:/ipfs/QmbSkwc4H3WG2UqPboaBxWhBc1obz3Ssjrfc5PsJi3a1Ae"
 			]
 		}
 	},

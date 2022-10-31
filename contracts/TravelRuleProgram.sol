@@ -5,9 +5,11 @@ pragma solidity >=0.7.0 <0.9.0;
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract TravelRuleProgram is Ownable {
+
     Transaction[] private transactions;
 
     struct Transaction {
+        uint256 id;
         address from;
         address to;
         string sendersData;
@@ -20,6 +22,10 @@ contract TravelRuleProgram is Ownable {
         uint256 transactionId,
         uint8 amlForSender,
         uint8 amlForReceiver
+    );
+
+    event AddTransaction (
+        uint256 id
     );
 
     function compareStrings(string memory a, string memory b) private pure returns (bool) {
@@ -50,7 +56,9 @@ contract TravelRuleProgram is Ownable {
         address to,
         string memory sendersData
     ) public returns(uint256) {
+        uint256 id = transactions.length;
         transactions.push(Transaction(
+            id,
             from,
             to,
             sendersData,
@@ -59,7 +67,9 @@ contract TravelRuleProgram is Ownable {
             0
         ));
 
-        return transactions.length;
+        emit AddTransaction(id);
+
+        return id;
     }
 
     function updateReceiversData(
@@ -72,6 +82,10 @@ contract TravelRuleProgram is Ownable {
         require(transaction.to == msg.sender, "Can not update receiver. Invalid sender");
 
         transactions[transactionId].receiversData = receiversData;
+    }
+
+    function getAllTransactions() public view returns(Transaction[] memory) {
+        return transactions;
     }
 
     function getTransactions(uint256 count) public view returns(Transaction[] memory) {
@@ -184,5 +198,9 @@ contract TravelRuleProgram is Ownable {
             senderStatus,
             receiverStatus
         );
+    }
+
+    function clear() public onlyOwner {
+        delete transactions;
     }
 }
