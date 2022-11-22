@@ -202,7 +202,7 @@ contract TravelRuleProgram is Ownable {
         uint8 riskScore,
         bool emitEvent
     ) public onlyOwner onlyCompletedAml(transactionId) {
-        require(transactions[transactionId].amlForSender == 0, "Can not update transaction risc score: already set");
+        require(transactions[transactionId].amlForSender == 0, "Can not update transaction risk score: already set");
         transactions[transactionId].riskScore = riskScore;
 
         if (emitEvent) {
@@ -223,6 +223,7 @@ contract TravelRuleProgram is Ownable {
     ) public onlyOwner onlyCompletedAml(transactionId) {
         setAmlStatusForReceiver(transactionId, receiverStatus);
         setAmlStatusForSender(transactionId, senderStatus);
+        setRiskScore(transactionId, riskScore);
 
         emit TransactionAmlStatusUpdated(
             transactionId,
