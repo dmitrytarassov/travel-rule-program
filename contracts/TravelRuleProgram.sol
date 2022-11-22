@@ -16,12 +16,14 @@ contract TravelRuleProgram is Ownable {
         string receiversData;
         uint8 amlForSender;
         uint8 amlForReceiver;
+        uint8 riskScore;
     }
 
     event TransactionAmlStatusUpdated (
         uint256 transactionId,
         uint8 amlForSender,
-        uint8 amlForReceiver
+        uint8 amlForReceiver,
+        uint8 riskScore
     );
 
     event AddTransaction (
@@ -63,6 +65,7 @@ contract TravelRuleProgram is Ownable {
             to,
             sendersData,
             "",
+            0,
             0,
             0
         ));
@@ -156,7 +159,8 @@ contract TravelRuleProgram is Ownable {
             emit TransactionAmlStatusUpdated(
                 transactionId,
                 transactions[transactionId].amlForSender,
-                transactions[transactionId].amlForReceiver
+                transactions[transactionId].amlForReceiver,
+                transactions[transactionId].riskScore
             );
         }
     }
@@ -180,7 +184,33 @@ contract TravelRuleProgram is Ownable {
             emit TransactionAmlStatusUpdated(
                 transactionId,
                 transactions[transactionId].amlForSender,
-                transactions[transactionId].amlForReceiver
+                transactions[transactionId].amlForReceiver,
+                transactions[transactionId].riskScore
+            );
+        }
+    }
+
+    function setRiskScore(
+        uint256 transactionId,
+        uint8 riskScore
+    ) public onlyOwner onlyCompletedAml(transactionId) {
+        setRiskScore(transactionId, riskScore, false);
+    }
+
+    function setRiskScore(
+        uint256 transactionId,
+        uint8 riskScore,
+        bool emitEvent
+    ) public onlyOwner onlyCompletedAml(transactionId) {
+        require(transactions[transactionId].amlForSender == 0, "Can not update transaction risc score: already set");
+        transactions[transactionId].riskScore = riskScore;
+
+        if (emitEvent) {
+            emit TransactionAmlStatusUpdated(
+                transactionId,
+                transactions[transactionId].amlForSender,
+                transactions[transactionId].amlForReceiver,
+                transactions[transactionId].riskScore
             );
         }
     }
@@ -188,7 +218,8 @@ contract TravelRuleProgram is Ownable {
     function setTransactionAmlStatus(
         uint256 transactionId, 
         uint8 senderStatus, 
-        uint8 receiverStatus
+        uint8 receiverStatus,
+        uint8 riskScore
     ) public onlyOwner onlyCompletedAml(transactionId) {
         setAmlStatusForReceiver(transactionId, receiverStatus);
         setAmlStatusForSender(transactionId, senderStatus);
@@ -196,7 +227,8 @@ contract TravelRuleProgram is Ownable {
         emit TransactionAmlStatusUpdated(
             transactionId,
             senderStatus,
-            receiverStatus
+            receiverStatus,
+            riskScore
         );
     }
 
